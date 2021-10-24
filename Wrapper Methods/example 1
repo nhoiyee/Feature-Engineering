@@ -1,0 +1,61 @@
+import pandas as pd
+import clib3
+
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+
+# Load the data
+health = pd.read_csv("dataR2.csv")
+
+print(health.head())
+
+# Split independent and dependent variables
+X = health.iloc[:,:-1]
+y = health.iloc[:,-1]
+
+# Logistic regression model
+lr = LogisticRegression(max_iter=1000)
+
+# Fit the model
+lr.fit(X, y)
+# Print the accuracy of the model
+print(lr.score(X,y))              #0.8017241379310345
+
+--------------------------------------------------------------------------------------
+
+#Sequential forward selection is a wrapper method that builds a feature set by starting with no features and then 
+adding one feature at a time until a desired number of features is reached. In the first step, the algorithm will train and test a model 
+using only one feature at a time. The algorithm keeps the feature that performs best.
+In each subsequent step, the algorithm will test the model on each possible new feature addition. Whichever feature improves model 
+performance the most is then added to the feature subset. This process stops once we have the desired number of features.
+
+set1 = {"age", "height", "weight", "resting_heart_rate"}
+set2 = {"age", "weight", "blood_pressure", "resting_heart_rate"}
+
+--------------------------------------------------------------------------------------
+#Sequential Forward Selection with mlxtend
+
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from mlxtend.feature_selection import SequentialFeatureSelector as SFS
+
+# Load the data
+health = pd.read_csv("dataR2.csv")
+X = health.iloc[:,:-1]
+y = health.iloc[:,-1]
+
+# Logistic regression model
+lr = LogisticRegression(max_iter=1000)
+
+# Sequential forward selection
+sfs = SFS(lr,
+          k_features=3,
+          forward=True,
+          floating=False,
+          scoring='accuracy',
+          cv=0)
+
+# Fit the sequential forward selection model
+sfs.fit(X, y)
+
+--------------------------------------------------------------------------------------
